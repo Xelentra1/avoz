@@ -629,6 +629,23 @@ void __fastcall PaintTraverse_Hooked(PVOID pPanels, int edx, unsigned int vguiPa
 			*(float*)((DWORD)&AmbientBlueCvar->fnChangeCallback + 0xC) = NULL;
 			AmbientBlueCvar->SetValue(AmbientBlueAmount);
 		}
+		
+		if (Interfaces::Engine->IsInGame() && Interfaces::Engine->IsConnected())
+		{
+			if (Menu::Window.VisualsTab.OtherNoScope.GetState() && strcmp("HudZoom", Interfaces::Panels->GetName(vguiPanel)) == 0)
+				return;
+
+			if (Menu::Window.VisualsTab.OtherNoScope.GetState())
+			{
+				if (hackManager.pLocal()->IsAlive() && hackManager.pLocal()->IsScoped())
+				{
+					int width, height;
+					Interfaces::Engine->GetScreenSize(width, height);
+					Render::Line(width / 2, 0, width / 2, height, Color(0, 0, 0, 255));
+					Render::Line(0, height / 2, width, height / 2, Color(0, 0, 0, 255));
+				}
+			}
+		}
 
 		Menu::DoUIFrame();
 	}
