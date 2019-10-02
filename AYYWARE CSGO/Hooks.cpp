@@ -390,11 +390,23 @@ bool __stdcall CreateMoveClient_Hooked( float frametime, CUserCmd* pCmd)
 
 		}
 
+		static bool nightsky;
 		if (Menu::Window.VisualsTab.NightSky.GetState())
 		{
-			ConVar* sky = Interfaces::CVar->FindVar("sv_skyname");
-			SpoofedConvar* sky_spoofed = new SpoofedConvar(sky);
-			sky_spoofed->SetString("sky_csgo_night02");
+		 if (!nightsky)
+		 {
+		 ConVar* sky = Interfaces::CVar->FindVar("sv_skyname");
+		 SpoofedConvar* sky_spoofed = new SpoofedConvar(sky);
+		 sky_spoofed->SetString("sky_csgo_night02");
+		 nightsky = true;
+		 }
+		}
+		else
+		{
+		 ConVar* sky = Interfaces::CVar->FindVar("sv_skyname");
+		 SpoofedConvar* sky_spoofed = new SpoofedConvar(sky);
+		 sky_spoofed->SetString("sky_dust");
+		 nightsky = false;
 		}
 
 		qAimAngles.Init(0.0f, GetAutostrafeView().y, 0.0f); 
